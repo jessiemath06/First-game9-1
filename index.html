@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Jessie Math捷析 - 怎樣解題PRO</title>
+
+  <meta name="description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+  
+  <meta property="og:title" content="Jessie Math捷析 - 怎樣解題PRO">
+  <meta property="og:description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+  <meta property="og:type" content="website">
+  
+  <meta property="og:image" content="g6-u9-1.png">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1536">
+  <meta property="og:image:alt" content="Jessie Math 遊戲封面">
+  
+  <link rel="image_src" href="g6-u9-1.png">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Jessie Math捷析 - 怎樣解題PRO">
+  <meta name="twitter:description" content="© 2025–2026 Jessie Math 捷析老師. All rights reserved.">
+  <meta name="twitter:image" content="g6-u9-1.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+    :root{
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #f1f5f9;
+      --bg-page: #fdfdfd;
+      --brand: #2563eb;
+      --brand-soft: rgba(37, 99, 235, 0.05);
+      --brand-hover: #1d4ed8;
+      --good: #059669;
+      --bad: #dc2626;
+      --warn: #d97706;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 10px 30px -10px rgba(0,0,0,0.08);
+      --radius: 16px;
+      --max: 1200px;
+      
+      --hero-bg: #eaddcb;
+      --hero-border: #d4c4af;
+      --hero-text: #1e3a8a;
+    }
+
+    *{ box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+    html,body{ height:100%; margin:0; }
+
+    body{
+      font-family: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+      color: var(--ink);
+      background-color: var(--bg-page);
+      /* 背景設定：確保圖片放大延伸且鎖定在右上角 */
+      background-image: url('jessie logo.jpg');
+      background-position: top right;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    a{ text-decoration:none; color:inherit; transition:opacity .2s; }
+    button{ font-family:inherit; border:none; outline:none; background:none; cursor:pointer; }
+
+    /* ====== 橫向螢幕鎖定 (手機專用, 平板/電腦不受限) ====== */
+    #orientationLock {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(15, 23, 42, 0.95);
+      color: white; z-index: 99999;
+      place-items: center; text-align: center;
+      padding: 24px; backdrop-filter: blur(10px);
+    }
+    #orientationLock i { font-size: 48px; margin-bottom: 16px; color: #38bdf8; }
+    @media screen and (max-width: 767px) and (orientation: portrait) {
+      #orientationLock { display: grid; }
+      body { overflow: hidden; }
+    }
+
+    /* ====== HEADER ====== */
+    .hero{
+      background: var(--bg-page); /* 這裡將透明改為實色，讓 hero 區塊不會透出背景圖 */
+      border-bottom: 2px solid var(--hero-border);
+      padding: 10px 24px;
+      position: sticky;
+      top:0; z-index: 50;
+    }
+    .hero-inner{
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    /* 左側：頭像品牌 (無框線) */
+    .header-left { display: flex; align-items: center; gap: 12px; z-index: 2; }
+    .brand-group { 
+      display: flex; align-items: center; gap: 10px; 
+    }
+    /* 頭像黃圈與透明背景更新 */
+    .avatarRing{
+      width: 40px; height: 40px; border-radius: 50%; border: 3px solid #eab308;
+      background: transparent; display: grid; place-items: center; overflow: hidden;
+    }
+    .avatarRing img { width: 100%; height: 100%; object-fit: cover; }
+    .brandText{ font-size: 20px; font-weight: 900; color: #1e3a8a; white-space: nowrap; font-family: 'Noto Sans TC', sans-serif; letter-spacing: 0.5px;}
+
+    /* 右側：三個白色導覽按鈕 */
+    .header-right { display: flex; align-items: center; gap: 10px; z-index: 2; }
+    .white-pill {
+      background: #fff; color: #333; border: 1px solid #e5e7eb; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 8px 16px; border-radius: 50px; font-size: 13px; font-weight: 700;
+      display: flex; align-items: center; gap: 6px; white-space: nowrap;
+    }
+    .white-pill:hover { background: #f9fafb; transform: translateY(-1px); color: var(--brand); border-color: #dbeafe;}
+
+    /* ====== MAIN LAYOUT ====== */
+    main.wrap{ max-width: var(--max); margin: 0 auto; padding: 32px 24px 24px; width: 100%; flex: 1 0 auto; position: relative;}
+    .grid{ display: grid; grid-template-columns: 1fr; gap: 32px; align-items: start; }
+    .grid.withSide{ grid-template-columns: 1fr 340px; }
+
+    .card{
+      background: #ffffff; border-radius: var(--radius); box-shadow: var(--shadow-md);
+      border: 1px solid rgba(226, 232, 240, 0.6); position: relative; min-width: 0;
+    }
+    .cardHd{
+      padding: 20px 28px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;
+    }
+    .cardHd h3{ margin:0; font-size: 16px; font-weight: 800; color: var(--ink); }
+    .cardBd{ padding: 28px; position: relative; }
+
+    /* ====== BUTTONS ====== */
+    .btnRow{ display:flex; gap:12px; flex-wrap:wrap; margin-top: 24px; }
+    .btn{
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
+      border-radius: 12px; font-size: 14px; font-weight: 600;
+      border: 1px solid #e2e8f0; background: #fff; color: var(--ink);
+      transition: all 0.2s; justify-content: center;
+    }
+    .btn:hover:not(:disabled){ background: #f8fafc; border-color: #cbd5e1; transform: translateY(-1px); }
+    .btn.primary{ background: var(--brand); color: #fff; border-color: var(--brand); box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2); }
+    .btn.primary:hover{ background: var(--brand-hover); }
+    .btn.warn{ background: #fffbeb; color: #92400e; border-color: #fef3c7; }
+    .btn:disabled{ opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+    /* ====== GAME UI ====== */
+    .screen{ display:none; animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .screen.active{ display:block; }
+    @keyframes scaleUp{ from{opacity:0; transform: scale(0.98);} to{opacity:1; transform: scale(1);} }
+
+    .kpis{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+    .kpi{ background: #fcfdfe; border: 1px solid #f1f5f9; border-radius: 10px; padding: 8px 12px; }
+    .kpi .t{ font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; }
+    .kpi .v{ font-size: 16px; font-weight: 800; color: var(--ink); margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+    .qCard{
+      background: #fff; border: 2px solid #f1f5f9; border-radius: var(--radius);
+      padding: 40px; position: relative; min-width: 0;
+    }
+    .qTypeBadge{
+      position: absolute; top: 16px; right: 24px; background: #f1f5f9; color: var(--muted);
+      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px;
+    }
+    .qText{ font-size: 26px; line-height: 1.6; font-weight: 700; color: var(--ink); margin: 12px 0 40px; word-break: break-word; }
+
+    .inputRow{ display: flex; gap: 12px; align-items: stretch; position: relative; z-index: 10; }
+    .in{
+      flex: 1; padding: 18px 24px; border: 2px solid #e2e8f0; border-radius: 12px;
+      font-size: 22px; font-weight: 700; outline: none; transition: border-color 0.2s;
+    }
+    .in:focus{ border-color: var(--brand); }
+
+    .feedback{ margin-top: 24px; padding: 18px; border-radius: 14px; display: none; position: relative; z-index: 10; }
+    .feedback.show{ display: block; animation: slideDown 0.3s ease-out; }
+    .feedback.good{ background: #f0fdf4; border: 1px solid #dcfce7; color: var(--good); }
+    .feedback.bad{ background: #fef2f2; border: 1px solid #fee2e2; color: var(--bad); }
+    @keyframes slideDown{ from{opacity:0; transform:translateY(-10px);} to{opacity:1; transform:translateY(0);} }
+
+    /* ====== 全螢幕白板系統 ====== */
+    #whiteboard {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none; z-index: 9990;
+    }
+    #whiteboard.active { pointer-events: auto; background: rgba(0, 0, 0, 0.05); cursor: crosshair; }
+    .wb-controls { position: fixed; top: 90px; right: 24px; z-index: 9999; display: none; gap: 8px; }
+    .wb-controls.show { display: flex; }
+    
+    /* ====== 排行榜 & 復盤 ====== */
+    .lbRow{
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 16px; margin-bottom: 8px; background: #f8fafc; border-radius: 12px; gap: 12px;
+    }
+    .lbRank{
+      width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center;
+      font-weight: 800; font-size: 14px; flex: 0 0 auto;
+    }
+    
+    .review-table { width: 100%; border-collapse: collapse; margin-top: 24px; font-size: 14px; text-align: left; }
+    .review-table th, .review-table td { padding: 12px; border-bottom: 1px solid var(--line); }
+    .review-table th { background: #f8fafc; color: var(--muted); font-weight: 700; }
+    .review-table tr.err { background: #fef2f2; }
+
+    /* ====== FOOTER ====== */
+    footer{ width: 100%; padding: 18px 24px 24px; display: flex; justify-content: center; }
+    .footer-pill {
+      display: inline-flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center;
+      background: #ffffff; border: 1px solid #e2e8f0; border-radius: 50px;
+      padding: 10px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      font-size: 13px; color: var(--muted); font-weight: 600;
+    }
+    .footer-left, .footer-right { display: flex; align-items: center; gap: 8px; }
+    .footer-dot { width: 6px; height: 6px; background: var(--brand); border-radius: 50%; }
+    .footer-icon { color: var(--brand); font-size: 14px; }
+    
+    /* Responsive tweaks */
+    @media (max-width: 1100px){
+      .hero-inner { flex-wrap: wrap; }
+    }
+    @media (max-width: 960px){
+      .grid.withSide{ grid-template-columns: 1fr; }
+      .header-right { justify-content: center; width: 100%; margin-top: 10px; }
+    }
+    @media (max-width: 768px){
+      .kpis{ grid-template-columns: repeat(2, 1fr); }
+      .wb-controls { top: 120px; }
+      .footer-pill { flex-direction: column; gap: 8px; text-align: center; border-radius: 16px; padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="orientationLock">
+    <div>
+      <i class="fas fa-mobile-alt" style="transform: rotate(-90deg);"></i>
+      <h2>請將裝置轉為橫向</h2>
+      <p style="opacity: 0.8; line-height: 1.6;">為了提供計算白板與最佳的遊戲視野，<br>手機需在橫向模式下運行。</p>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="header-left">
+        <div class="brand-group">
+          <div class="avatarRing">
+            <img src="JESSIEMATH-Q.png" alt="Jessie" onerror="this.outerHTML='<i class=\'fas fa-user-graduate\' style=\'color:#eab308;font-size:18px;\'></i>'">
+          </div>
+          <span class="brandText">Jessie Math捷析</span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <a href="https://jessiemath0703-chu.github.io/website2/" class="white-pill"><i class="fas fa-home"></i> 首頁</a>
+        <a href="https://jessiemath0703-chu.github.io/Game-Lobby/" class="white-pill"><i class="fas fa-gamepad"></i> 遊戲大廳</a>
+        <a href="https://jessiemath0703-chu.github.io/Game-Lobby/#g6-u9" class="white-pill"><i class="fas fa-undo"></i> 怎樣解題(一)</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid" id="mainGrid">
+      
+      <section class="card">
+        <div class="cardHd">
+          <h3 id="screenTitle">歡迎來到試煉</h3>
+        </div>
+        
+        <div class="cardBd" id="gameBd">
+
+          <div id="screenWelcome" class="screen">
+            <div style="text-align:center; padding: 20px 0;">
+              <h2 style="font-size:26px; font-weight: 800; margin-bottom: 24px;">怎樣解題 PRO：邏輯特訓</h2>
+              
+              <div style="background: #f8fafc; padding: 20px; border-radius: 16px; text-align: left; max-width: 500px; margin: 0 auto 32px;">
+                <h4 style="margin:0 0 12px; color: var(--brand);"><i class="fas fa-book-open"></i> 遊戲說明</h4>
+                <ul style="margin:0; padding-left: 20px; color: var(--muted); line-height: 1.8; font-size: 14px;">
+                  <li><strong>計時器機制：</strong>根據難度給予起始時間，答對 +5秒，答錯 -5秒。</li>
+                  <li><strong>計算白板：</strong>遊戲中可隨時開啟全螢幕白板進行算式推導。</li>
+                  <li><strong>復盤系統：</strong>挑戰結束後可檢視答錯的題目與正確答案。</li>
+                  <li><strong>排行榜：</strong>結算後將成績錄入名人堂 (紀錄關卡/難度/分數/存活時間)。</li>
+                </ul>
+              </div>
+
+              <div style="max-width: 320px; margin: 0 auto;">
+                <label style="display:block; text-align:left; font-size:13px; font-weight:700; margin-bottom:8px; color:var(--muted);">請輸入玩家代號 (必填)</label>
+                <div class="inputRow">
+                  <input type="text" class="in" id="initName" placeholder="例如：小天才" maxlength="10">
+                </div>
+              </div>
+
+              <div class="btnRow" style="justify-content:center; margin-top: 32px;">
+                <button class="btn primary" style="padding: 14px 40px; font-size: 16px;" onclick="app.checkNameAndGo()">進入系統</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="screenSelect" class="screen">
+             <div class="kpis" style="grid-template-columns: 1fr 1fr;">
+               <div class="kpi"><div class="t">挑戰者</div><div class="v" id="uiName" style="color:var(--brand);">-</div></div>
+               <div class="kpi"><div class="t">選擇挑戰</div><div class="v" id="uiLvl" style="font-size:18px;">尚未選擇</div></div>
+             </div>
+
+             <div>
+               <p style="font-weight:700; margin-bottom:12px; font-size:14px; color:var(--muted);">1. 選擇解題單元</p>
+               <div class="btnRow" id="lvlBtns" style="margin-top:0; gap:10px;"></div>
+
+               <div style="height:1px; background:var(--line); margin:24px 0;"></div>
+
+               <p style="font-weight:700; margin-bottom:12px; font-size:14px; color:var(--muted);">2. 選擇邏輯難度</p>
+               <div class="btnRow" id="diffBtns" style="margin-top:0; gap:10px;">
+                 <button class="btn" onclick="app.setDiff('easy')" data-d="easy">輕鬆模式 (90秒)</button>
+                 <button class="btn" onclick="app.setDiff('normal')" data-d="normal">標準模式 (60秒)</button>
+                 <button class="btn" onclick="app.setDiff('hard')" data-d="hard">極限挑戰 (45秒)</button>
+               </div>
+             </div>
+
+             <div class="btnRow" style="margin-top:32px; justify-content:flex-end;">
+               <button class="btn primary" id="btnStartGame" disabled onclick="app.startGame()" style="min-width:160px;">開始試煉 <i class="fas fa-play"></i></button>
+             </div>
+          </div>
+
+          <div id="screenGame" class="screen">
+            <div class="kpis">
+              <div class="kpi"><div class="t">剩餘時間</div><div class="v" id="hudTime">60</div></div>
+              <div class="kpi"><div class="t">目前積分</div><div class="v" id="hudScore">0</div></div>
+              <div class="kpi"><div class="t">連擊紀錄</div><div class="v" id="hudCombo">0</div></div>
+              <div class="kpi"><div class="t">難度倍率</div><div class="v" id="hudMult">x1</div></div>
+            </div>
+
+            <div class="qCard">
+              <span class="qTypeBadge" id="qBadge">應用填充題</span>
+              <div class="qText" id="qText">題目準備中...</div>
+              
+              <div id="answerZone">
+                <div class="inputRow">
+                  <input type="number" step="any" class="in" id="ansInput" placeholder="請填寫數字答案..." autocomplete="off">
+                  <button class="btn primary" onclick="app.checkAnswer()">送出解答</button>
+                </div>
+              </div>
+
+              <div class="feedback" id="feedback">
+                <div style="font-weight:800; font-size:16px;" id="fbTitle"></div>
+                <div style="font-size:15px; margin-top:6px; font-weight:600;" id="fbDesc"></div>
+              </div>
+            </div>
+            
+            <div class="btnRow" style="justify-content:center; margin-top:32px;">
+              <button class="btn" id="btnPause" onclick="app.togglePause()"><i class="fas fa-pause"></i> 暫停</button>
+              <button class="btn" onclick="app.restart()"><i class="fas fa-redo"></i> 重新</button>
+              <button class="btn" onclick="app.toggleWhiteboard()"><i class="fas fa-pen"></i> 計算白板</button>
+              <button class="btn" onclick="app.toMenu()"><i class="fas fa-list"></i> 回關卡主選單</button>
+            </div>
+          </div>
+
+          <div id="screenResult" class="screen">
+            <div style="text-align:center;">
+              <h2 style="margin:0; font-size:28px;">試煉報告</h2>
+              <div style="font-size:48px; margin:16px 0;" id="resStars">🏆</div>
+              <p style="color:var(--muted); font-size:16px;">表現卓越，<strong style="color:var(--ink);" id="resName"></strong>！</p>
+
+              <div style="display:flex; justify-content:center; gap:40px; margin:30px 0; background:#f8fafc; padding:24px; border-radius:16px;">
+                <div>
+                    <div style="font-size:12px; color:var(--muted); font-weight:700;">最終積分</div>
+                    <div style="font-size:32px; font-weight:800; color:var(--brand); margin-top:4px;" id="resScore">0</div>
+                </div>
+                <div>
+                    <div style="font-size:12px; color:var(--muted); font-weight:700;">存活時間</div>
+                    <div style="font-size:32px; font-weight:800; color:var(--ink); margin-top:4px;" id="resSurvive">0s</div>
+                </div>
+              </div>
+
+              <div style="text-align:left; margin-top: 32px;">
+                <h3 style="margin:0 0 16px; font-size:18px;"><i class="fas fa-clipboard-check"></i> 戰術復盤清單</h3>
+                <div style="max-height: 250px; overflow-y: auto; border: 1px solid var(--line); border-radius: 12px;">
+                  <table class="review-table" id="reviewTable">
+                    <thead><tr><th width="50%">題目</th><th width="25%">你的答案</th><th width="25%">正確答案</th></tr></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="btnRow" style="justify-content:center; margin-top:32px;">
+                <button class="btn primary" onclick="app.restart()"><i class="fas fa-redo"></i> 再戰一次</button>
+                <button class="btn" onclick="app.toMenu()"><i class="fas fa-home"></i> 返回主選單</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <aside class="card" id="sideLB" style="display:none;">
+        <div class="cardHd">
+          <h3><i class="fas fa-trophy" style="color:#d4af37;"></i> 榮譽榜 (TOP 10)</h3>
+        </div>
+        <div class="cardBd" style="padding: 20px;">
+          <div style="font-size:13px; color:var(--brand); margin-bottom:16px; font-weight:700; text-align:center; background:var(--brand-soft); padding:10px; border-radius:10px;">
+            <span id="lbLabel">請先選擇單元查看紀錄</span>
+          </div>
+          <div id="lbList"></div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer>
+      <div class="footer-pill">
+          <div class="footer-left">
+              <div class="footer-dot" aria-hidden="true"></div>
+              <div class="footer-copy">© 2025–2026 Jessie Math 捷析老師. All rights reserved.</div>
+          </div>
+          <div class="footer-right">
+              <div class="footer-icon" aria-hidden="true"><i class="fas fa-compass"></i></div>
+              <div class="footer-tagline">數學不迷路，捷析Jessie帶你走向理解。</div>
+          </div>
+      </div>
+  </footer>
+
+  <canvas id="whiteboard"></canvas>
+  <div class="wb-controls" id="wbControls">
+    <button class="btn" style="padding:8px 12px; background:#fff; box-shadow:var(--shadow-md);" onclick="app.clearWhiteboard()" title="清除筆跡"><i class="fas fa-eraser"></i></button>
+    <button class="btn primary" style="padding:8px 12px; box-shadow:var(--shadow-md);" onclick="app.toggleWhiteboard()" title="關閉計算紙"><i class="fas fa-times"></i></button>
+  </div>
+
+  <script>
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+    const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+    const app = {
+      state: {
+        player: localStorage.getItem('JM_P9_NAME') || '',
+        level: 0,
+        diff: '',
+        score: 0,
+        time: 0,
+        initTime: 0,
+        combo: 0,
+        timer: null,
+        isPaused: false,
+        q: null,
+        history: [], 
+        wbActive: false
+      },
+
+      levels: [
+        {id:1, name:'和不變理論'},
+        {id:2, name:'差不變理論'},
+        {id:3, name:'積不變理論'},
+        {id:4, name:'商不變理論'},
+        {id:5, name:'雞兔同籠'}
+      ],
+
+      init(){
+        this.renderLvlBtns();
+        if(this.state.player) { $('#initName').value = this.state.player; }
+        this.initWhiteboard();
+        window.addEventListener('resize', () => this.resizeCanvas());
+        
+        // 初始載入第一頁 (登入畫面)
+        this.showScreen('screenWelcome');
+      },
+
+      syncLayout(screenId){
+        const isSelect = (screenId === 'screenSelect');
+        // 只有第二頁 (參數設定與準備) 會開啟右側榮譽榜
+        $('#mainGrid').classList.toggle('withSide', isSelect);
+        $('#sideLB').style.display = isSelect ? 'block' : 'none';
+        
+        if(screenId !== 'screenGame' && this.state.wbActive) this.toggleWhiteboard();
+      },
+
+      checkNameAndGo(){
+        const name = $('#initName').value.trim();
+        if(!name){ alert('請務必輸入玩家代號以記錄您的成績！'); return; }
+        this.state.player = name;
+        localStorage.setItem('JM_P9_NAME', name);
+        this.toSelect();
+      },
+
+      toSelect(){
+        this.showScreen('screenSelect');
+        $('#uiName').textContent = this.state.player;
+        this.updateLB();
+      },
+
+      showScreen(id){
+        $$('.screen').forEach(el => el.classList.remove('active'));
+        $('#'+id).classList.add('active');
+        const titles = {
+          'screenWelcome': '系統登入',
+          'screenSelect': '參數設定與準備',
+          'screenGame': '任務執行中',
+          'screenResult': '戰術復盤與結算'
+        };
+        $('#screenTitle').textContent = titles[id];
+        this.syncLayout(id);
+      },
+
+      renderLvlBtns(){
+        const box = $('#lvlBtns');
+        box.innerHTML = this.levels.map(l =>
+          `<button class="btn" onclick="app.setLevel(${l.id})" data-id="${l.id}">${l.name}</button>`
+        ).join('');
+      },
+
+      setLevel(id){
+        this.state.level = id;
+        $$('#lvlBtns .btn').forEach(b => b.classList.toggle('primary', parseInt(b.dataset.id) === id));
+        $('#uiLvl').textContent = this.levels.find(l=>l.id===id).name;
+        this.checkStart();
+        this.updateLB();
+      },
+
+      setDiff(d){
+        this.state.diff = d;
+        $$('#diffBtns .btn').forEach(b => b.classList.toggle('primary', b.dataset.d === d));
+        this.checkStart();
+        this.updateLB();
+      },
+
+      checkStart(){
+        $('#btnStartGame').disabled = !(this.state.level && this.state.diff);
+      },
+
+      startGame(){
+        const times = { 'easy': 90, 'normal': 60, 'hard': 45 };
+        this.state.initTime = times[this.state.diff];
+        this.state.time = this.state.initTime;
+        this.state.score = 0;
+        this.state.combo = 0;
+        this.state.history = []; 
+        this.state.isPaused = false;
+        
+        // 重置暫停按鈕樣式
+        const btn = $('#btnPause');
+        if(btn) {
+          btn.innerHTML = '<i class="fas fa-pause"></i> 暫停';
+          btn.classList.remove('primary');
+        }
+
+        this.showScreen('screenGame');
+        $('#feedback').classList.remove('show');
+        this.clearWhiteboard();
+
+        this.updateHUD();
+        this.nextQuestion();
+
+        clearInterval(this.state.timer);
+        this.state.timer = setInterval(() => {
+          if (this.state.isPaused) return; // 暫停機制
+          this.state.time--;
+          this.updateHUD();
+          if(this.state.time <= 0) this.endGame();
+        }, 1000);
+      },
+
+      togglePause(){
+        this.state.isPaused = !this.state.isPaused;
+        const btn = $('#btnPause');
+        if(this.state.isPaused) {
+          btn.innerHTML = '<i class="fas fa-play"></i> 繼續';
+          btn.classList.add('primary');
+        } else {
+          btn.innerHTML = '<i class="fas fa-pause"></i> 暫停';
+          btn.classList.remove('primary');
+        }
+      },
+
+      restart(){ this.startGame(); },
+      toMenu(){
+        clearInterval(this.state.timer);
+        this.showScreen('screenSelect');
+      },
+
+      updateHUD(){
+        $('#hudTime').textContent = this.state.time + 's';
+        $('#hudScore').textContent = this.state.score;
+        $('#hudCombo').textContent = this.state.combo;
+        const mul = this.state.diff === 'hard' ? 2 : (this.state.diff === 'normal' ? 1.5 : 1);
+        $('#hudMult').textContent = 'x' + mul;
+        $('#hudTime').style.color = this.state.time <= 10 ? 'var(--bad)' : 'var(--ink)';
+      },
+
+      /* ===== 擴充與改編題庫 (全填充與應用題為主) ===== */
+      genQuestion(){
+        const l = this.state.level;
+        let q = { text:'', ans:0, type: 'fill' };
+        const qType = rand(1, 3);
+        
+        if(l === 1){ 
+           if (qType === 1) {
+             const a = rand(30, 150);
+             const b = rand(10, a - 10);
+             const give = rand(2, Math.floor((a-b)/2));
+             q.text = `哥哥有 ${a} 元，弟弟有 ${b} 元。哥哥給弟弟 ${give} 元後，兩人的錢加起來共有多少元？`;
+             q.ans = a + b;
+           } else if (qType === 2) {
+             const diff = rand(5, 40) * 2; 
+             const b = rand(20, 100);
+             const a = b + diff;
+             q.text = `甲杯裝有 ${a} 毫升的水，乙杯裝有 ${b} 毫升的水。要從甲杯倒多少毫升的水到乙杯，兩杯的水才會一樣多？`;
+             q.ans = diff / 2;
+           } else {
+             const sum = rand(60, 200);
+             const diff = rand(10, 50);
+             const adjSum = (sum % 2 !== diff % 2) ? sum + 1 : sum;
+             const askBig = Math.random() > 0.5;
+             q.text = `大、小兩數的和是 ${adjSum}，兩數的差是 ${diff}。請問${askBig ? '大' : '小'}數是多少？`;
+             q.ans = askBig ? (adjSum + diff) / 2 : (adjSum - diff) / 2;
+           }
+        } else if(l === 2){ 
+           if (qType === 1) {
+             const diff = rand(22, 35);
+             const bAge = rand(5, 15);
+             const aAge = bAge + diff;
+             const years = rand(5, 20);
+             q.text = `媽媽今年 ${aAge} 歲，兒子今年 ${bAge} 歲。${years} 年後，兩人相差幾歲？`;
+             q.ans = diff;
+           } else if (qType === 2) {
+             const diff = rand(25, 35);
+             const bAge = rand(6, 14);
+             const aAge = bAge + diff;
+             const targetB = bAge + rand(8, 15);
+             q.text = `爸爸今年 ${aAge} 歲，女兒今年 ${bAge} 歲。當女兒 ${targetB} 歲時，爸爸是幾歲？`;
+             q.ans = targetB + diff;
+           } else {
+             const times = rand(3, 5);
+             const targetB = rand(5, 12);
+             const targetA = targetB * times;
+             const shift = rand(3, 10);
+             const aAge = targetA + shift; 
+             const bAge = targetB + shift;
+             q.text = `爺爺今年 ${aAge} 歲，孫子今年 ${bAge} 歲。幾年前，爺爺的年齡剛好是孫子的 ${times} 倍？`;
+             q.ans = shift;
+           }
+        } else if(l === 3){ 
+           if (qType === 1) {
+             const pairs = [[10, 20], [15, 20], [20, 25], [25, 40], [12, 15], [30, 40]];
+             const pair = pairs[rand(0, pairs.length - 1)];
+             const p1 = pair[0], p2 = pair[1];
+             const qty1 = rand(4, 12) * (p2 / (p1 === p2 ? 1 : gcd(p1, p2))); 
+             const tot = p1 * qty1;
+             q.text = `小欣帶了一些錢，如果全部買每包 ${p1} 元的餅乾，剛好可以買 ${qty1} 包；如果全部改買每瓶 ${p2} 元的飲料，可以買幾瓶？`;
+             q.ans = tot / p2;
+           } else if (qType === 2) {
+             const pairs = [[15, 10], [12, 8], [16, 12], [20, 15], [24, 16]];
+             const pair = pairs[rand(0, pairs.length - 1)];
+             const bag1 = pair[0], bag2 = pair[1];
+             const num1 = rand(5, 15) * (bag2 / gcd(bag1, bag2));
+             const tot = bag1 * num1;
+             q.text = `有一大袋糖果，如果每 ${bag1} 顆裝一包，一共可裝成 ${num1} 包。如果改成每 ${bag2} 顆裝一包，可以裝成幾包？`;
+             q.ans = tot / bag2;
+           } else {
+             const lwPairs = [[20, 15, 12], [30, 10, 15], [24, 10, 15], [25, 12, 10], [16, 15, 10]];
+             const p = lwPairs[rand(0, lwPairs.length-1)];
+             q.text = `有一個長方形花園長 ${p[0]} 公尺，寬 ${p[1]} 公尺。如果面積不變，寬改為 ${p[2]} 公尺，則長會變為幾公尺？`;
+             q.ans = (p[0] * p[1]) / p[2];
+           }
+        } else if(l === 4){ 
+           if (qType === 1) {
+             const unitPrice = rand(15, 45);
+             const q1 = rand(3, 8);
+             const cost1 = unitPrice * q1;
+             const q2 = rand(9, 15);
+             q.text = `文具店裡，買 ${q1} 本相同的筆記本需要 ${cost1} 元。如果要買 ${q2} 本相同的筆記本，需要多少元？`;
+             q.ans = unitPrice * q2;
+           } else if (qType === 2) {
+             const v1 = rand(10, 25);
+             const yieldRate = rand(25, 40); 
+             const w1 = v1 * yieldRate;
+             const v2 = v1 + rand(5, 15);
+             q.text = `${v1} 公升的海水可以提煉出 ${w1} 公克的鹽。若有 ${v2} 公升的海水，可以提煉出多少公克的鹽？`;
+             q.ans = v2 * yieldRate;
+           } else {
+             const speed = rand(60, 95);
+             const t1 = rand(2, 6);
+             const d1 = speed * t1;
+             const t2 = t1 + rand(1, 4);
+             q.text = `汽車等速行駛，${t1} 小時可以開 ${d1} 公里。若保持相同速率，${t2} 小時可以開幾公里？`;
+             q.ans = speed * t2;
+           }
+        } else if(l === 5){ 
+           if (qType === 1) {
+             const heads = rand(15, 45);
+             const rabbits = rand(5, heads - 5);
+             const chickens = heads - rabbits;
+             const legs = chickens * 2 + rabbits * 4;
+             const askRabbit = Math.random() > 0.5;
+             q.text = `快樂農場裡有雞和兔子共 ${heads} 隻，數一數共有 ${legs} 隻腳。請問農場裡有幾隻${askRabbit ? '兔子' : '雞'}？`;
+             q.ans = askRabbit ? rabbits : chickens;
+           } else if (qType === 2) {
+             const coins = rand(20, 60);
+             const tenCoins = rand(8, coins - 8);
+             const fiveCoins = coins - tenCoins;
+             const total = tenCoins * 10 + fiveCoins * 5;
+             const askTen = Math.random() > 0.5;
+             q.text = `佩琪的撲滿裡有 5元 和 10元 的硬幣共 ${coins} 個，合起來共有 ${total} 元。請問撲滿裡有幾個 ${askTen ? '10元' : '5元'} 硬幣？`;
+             q.ans = askTen ? tenCoins : fiveCoins;
+           } else {
+             const p1 = 250, p2 = 200;
+             const totalT = rand(30, 60);
+             const t1 = rand(10, totalT - 10);
+             const t2 = totalT - t1;
+             const income = t1 * p1 + t2 * p2;
+             const askP1 = Math.random() > 0.5;
+             q.text = `美術展全票一張 ${p1} 元，優待票一張 ${p2} 元。今天共賣出 ${totalT} 張票，總收入是 ${income} 元。請問賣出幾張${askP1 ? '全票' : '優待票'}？`;
+             q.ans = askP1 ? t1 : t2;
+           }
+        }
+
+        function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+        return q;
+      },
+
+      nextQuestion(){
+        $('#feedback').classList.remove('show');
+        const q = this.genQuestion();
+        this.state.q = q;
+
+        $('#qText').textContent = q.text;
+        $('#ansInput').value = '';
+        $$('#answerZone button, #answerZone input').forEach(e => e.disabled = false);
+        
+        setTimeout(()=>$('#ansInput').focus(), 50);
+        $('#ansInput').onkeydown = (e) => { if(e.key === 'Enter') app.checkAnswer(); };
+      },
+
+      checkAnswer(){
+        if(this.state.isPaused) return; // 暫停時不給作答
+        
+        let val = $('#ansInput').value;
+        if(val === '') return;
+        val = Number(val);
+        
+        const isCorrect = (val === this.state.q.ans);
+        
+        this.state.history.push({
+          q: this.state.q.text,
+          userAns: val,
+          ans: this.state.q.ans,
+          correct: isCorrect
+        });
+
+        const fb = $('#feedback');
+        $$('#answerZone button, #answerZone input').forEach(e => e.disabled = true);
+
+        if(isCorrect){
+          this.state.combo++;
+          this.state.time += 5;
+          const pts = (this.state.diff === 'hard' ? 20 : (this.state.diff === 'normal' ? 15 : 10)) * (1 + (this.state.combo * 0.1));
+          this.state.score += Math.floor(pts);
+          
+          fb.className = 'feedback show good';
+          $('#fbTitle').innerHTML = '<i class="fas fa-check-circle"></i> 邏輯正確';
+          $('#fbDesc').textContent = '獲得額外 5 秒緩衝！準備進入下一題...';
+          this.updateHUD();
+          setTimeout(() => { if(this.state.time > 0) this.nextQuestion(); }, 1000);
+        } else {
+          this.state.combo = 0;
+          this.state.time -= 5;
+          fb.className = 'feedback show bad';
+          $('#fbTitle').innerHTML = '<i class="fas fa-times-circle"></i> 邏輯錯誤';
+          $('#fbDesc').textContent = `正確答案為：${this.state.q.ans}。扣除 5 秒！`;
+          this.updateHUD();
+          setTimeout(() => { 
+              if(this.state.time > 0) this.nextQuestion(); 
+              else this.endGame();
+          }, 2500); 
+        }
+      },
+
+      endGame(){
+        clearInterval(this.state.timer);
+        this.showScreen('screenResult');
+        const survived = this.state.initTime - (this.state.time < 0 ? 0 : this.state.time);
+        
+        $('#resName').textContent = this.state.player;
+        $('#resScore').textContent = this.state.score;
+        $('#resSurvive').textContent = survived + 's';
+        
+        $('#resStars').textContent = this.state.score > 800 ? '🏆🏆🏆' : this.state.score > 400 ? '🥇🥇' : '👍';
+
+        const tbody = $('#reviewTable tbody');
+        if(this.state.history.length === 0){
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">無作答紀錄</td></tr>';
+        } else {
+          tbody.innerHTML = this.state.history.map(h => 
+            `<tr class="${h.correct ? '' : 'err'}">
+              <td>${h.q}</td>
+              <td style="color:${h.correct?'var(--good)':'var(--bad)'}; font-weight:700;">${h.userAns} ${h.correct?'<i class="fas fa-check"></i>':''}</td>
+              <td>${h.ans}</td>
+             </tr>`
+          ).join('');
+        }
+
+        // ================= 排行榜資料儲存調整 =================
+        const dateStr = new Date().toLocaleDateString('zh-TW', {year:'numeric', month:'2-digit', day:'2-digit'});
+        const modeNames = {'easy':'輕鬆', 'normal':'標準', 'hard':'極限'};
+        const lvlName = this.levels.find(l=>l.id===this.state.level).name;
+
+        const key = `JM_LB_L${this.state.level}_${this.state.diff}`;
+        let lb = JSON.parse(localStorage.getItem(key) || '[]');
+        lb.push({ 
+          name: this.state.player, 
+          score: this.state.score,
+          time: survived,
+          date: dateStr,
+          levelName: `${lvlName} - ${modeNames[this.state.diff]}`
+        });
+        lb.sort((a,b) => b.score - a.score);
+        localStorage.setItem(key, JSON.stringify(lb.slice(0, 10)));
+        this.updateLB();
+      },
+
+      updateLB(){
+        const key = `JM_LB_L${this.state.level}_${this.state.diff}`;
+        const list = $('#lbList');
+        if(!this.state.level || !this.state.diff) { list.innerHTML = ''; return; }
+        
+        const modeNames = {'easy':'輕鬆', 'normal':'標準', 'hard':'極限'};
+        const lvlName = this.levels.find(l=>l.id==this.state.level).name;
+        $('#lbLabel').textContent = `${lvlName} - ${modeNames[this.state.diff]}`;
+        
+        const lb = JSON.parse(localStorage.getItem(key) || '[]');
+        
+        // ================= 排行榜畫面渲染調整 =================
+        list.innerHTML = lb.length === 0 ? '<div style="text-align:center; color:var(--muted); padding:20px;">尚無挑戰紀錄</div>' :
+          lb.map((r, i) => {
+            // 前三名特殊獎牌，第四名後自訂圖示
+            const rankIcon = i === 0 ? `<span style="font-size:24px;">🥇</span>` : 
+                             i === 1 ? `<span style="font-size:24px;">🥈</span>` : 
+                             i === 2 ? `<span style="font-size:24px;">🥉</span>` : 
+                             `<i class="fas fa-medal" style="color:#94a3b8; font-size:16px;"></i><span style="font-size:13px; margin-left:4px; color:var(--muted); font-weight:bold;">${i+1}</span>`;
+            
+            // 兼容舊資料防錯處理
+            const rLevel = r.levelName || `${lvlName} - ${modeNames[this.state.diff]}`;
+            const rDate = r.date || '無紀錄';
+
+            return `
+            <div class="lbRow" style="flex-direction:column; align-items:stretch; padding:12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <div class="lbRank" style="width:auto; min-width:32px;">${rankIcon}</div>
+                  <div style="font-weight:800; color:var(--ink);">${r.name}</div>
+                </div>
+                <div style="font-weight:900; color:var(--brand); font-size:16px;">${r.score} 分</div>
+              </div>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; font-size:12px; color:var(--muted); background:#fff; padding:10px; border-radius:8px; border:1px solid #f1f5f9;">
+                <div style="grid-column: 1 / 3;"><i class="fas fa-flag" style="width:16px; text-align:center; color:#64748b;"></i> 關卡: ${rLevel}</div>
+                <div><i class="fas fa-clock" style="width:16px; text-align:center; color:#64748b;"></i> 時間: ${r.time}s</div>
+                <div style="text-align:right;"><i class="far fa-calendar-alt" style="width:16px; text-align:center; color:#64748b;"></i> ${rDate}</div>
+              </div>
+            </div>`;
+          }).join('');
+      },
+
+      initWhiteboard() {
+        this.canvas = $('#whiteboard');
+        this.ctx = this.canvas.getContext('2d');
+        this.isDrawing = false;
+        
+        const startDraw = (e) => {
+          if(!this.state.wbActive) return;
+          this.isDrawing = true;
+          this.ctx.beginPath();
+          const pos = this.getMousePos(e);
+          this.ctx.moveTo(pos.x, pos.y);
+          e.preventDefault();
+        };
+        const draw = (e) => {
+          if(!this.isDrawing || !this.state.wbActive) return;
+          const pos = this.getMousePos(e);
+          this.ctx.lineTo(pos.x, pos.y);
+          this.ctx.strokeStyle = '#2563eb';
+          this.ctx.lineWidth = 2;
+          this.ctx.lineCap = 'round';
+          this.ctx.stroke();
+          e.preventDefault();
+        };
+        const stopDraw = () => { this.isDrawing = false; };
+
+        this.canvas.addEventListener('mousedown', startDraw);
+        this.canvas.addEventListener('mousemove', draw);
+        this.canvas.addEventListener('mouseup', stopDraw);
+        this.canvas.addEventListener('mouseout', stopDraw);
+        
+        this.canvas.addEventListener('touchstart', startDraw, {passive: false});
+        this.canvas.addEventListener('touchmove', draw, {passive: false});
+        this.canvas.addEventListener('touchend', stopDraw);
+      },
+
+      getMousePos(evt) {
+        const rect = this.canvas.getBoundingClientRect();
+        const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+        const clientY = evt.touches ? evt.touches[0].clientY : evt.clientY;
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top
+        };
+      },
+
+      resizeCanvas() {
+        if(!this.canvas) return;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+      },
+
+      toggleWhiteboard() {
+        this.state.wbActive = !this.state.wbActive;
+        this.canvas.classList.toggle('active', this.state.wbActive);
+        $('#wbControls').classList.toggle('show', this.state.wbActive);
+        
+        if(this.state.wbActive) {
+          this.resizeCanvas();
+        } else {
+          // 關閉時自動清除筆跡
+          this.clearWhiteboard();
+        }
+      },
+
+      clearWhiteboard() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+    };
+
+    window.onload = () => app.init();
+  </script>
+</body>
+</html>
